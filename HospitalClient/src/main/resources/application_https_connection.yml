@@ -1,0 +1,12 @@
+ 
+oauth:
+  resource: http://localhost:8083
+  resource: 
+      client_greeting: http://localhost:8083/client_greeting
+  resource: 
+       greeting: http://localhost:8083/greeting
+     
+  authorize: http://localhost:8080/sso/oauth/authorize
+  token: http://localhost:8080/sso/oauth/token
+  
+  

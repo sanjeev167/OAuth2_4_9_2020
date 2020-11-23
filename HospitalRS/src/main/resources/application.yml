@@ -1,0 +1,14 @@
+server: 
+  port: 8083
+  servlet: 
+    context-path: /rs
+ 
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:7777/sso/
+          jwk-set-uri: http://localhost:7777/sso/token_keys
+    
+         

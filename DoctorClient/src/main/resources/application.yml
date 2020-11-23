@@ -1,0 +1,34 @@
+ 
+spring:
+    security:
+          oauth2:
+              client:              
+                registration:
+                  custom-client:
+                    client-id: DoctorApplication
+                    client-secret: 1234
+                    client-name: Doctor Client
+                    
+                    provider: custom-provider
+                    redirect-uri: http://localhost:8082/login/oauth2/code/
+                    client-authentication-method: basic
+                    authorization-grant-type: authorization_code
+              
+                provider:
+                  custom-provider:
+                    token-uri: http://localhost:7777/sso/oauth/token
+                    authorization-uri: http://localhost:7777/sso/oauth/authorize
+                    user-info-uri: http://localhost:7777/sso/userinfo
+                    user-name-attribute: name           
+                    
+                           
+server:
+   port: 8082
+   servlet:
+      context-path: /
+      session:
+         cookie:
+             name: DOCSESSION 
+             
+             
+             

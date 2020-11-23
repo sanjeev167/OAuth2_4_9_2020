@@ -1,0 +1,56 @@
+
+
+
+##Local Application Configuration 
+server:
+  port: 8081
+  servlet:
+    context-path: /
+    session:
+      cookie:
+        name: HPTSESSION
+    
+      
+resourceBaseUri: http://localhost:8083/  
+
+
+#########  This properties configuration is made with an objective of initializing a web client request for different puposes
+#########  Oauth client uses this for fetching [1] accessToken [2] refreshToken [3] oauth2 code [4] oauth2/authorize page [5] unserInfo
+#########  If you are using webClient [webflux] or RestTemplate, they also get initialized with accessToken and refreshToken Uri
+#########  and it is so smart that you don't require to check the accessToken validity refreshToken call when it requires. Spring boot 
+#########  smart webClient will keep doing all thiese internally for you. You need to tell the webClient about resource server uri from where 
+########   the resource is to be fetched and along with it you have to mention resource id i.e. which resource is to be picked.
+ 
+ 
+### This configuration is required while communicating with Oauth2 server 
+
+spring:
+    profiles:
+      active: http_connection
+  
+    security:
+          oauth2:
+              client:              
+                registration:
+                  custom-client:
+                    client-id: HospitalApplication ###A registered client name with OAuth2 SSO
+                    client-secret: 1234 ##Sensative
+                    client-name: Hospital Client                  
+                    provider: custom-provider ### custom-provider is used when your OAuth2 SSO implementation is of yours, not google/Twitter/Linked-In
+                    redirect-uri: http://localhost:8081/login/oauth2/code/### This is the place at the client end where the return control will go
+                    client-authentication-method: basic
+                    authorization-grant-type: authorization_code
+                    ### Scope will also be configured here if you are interested to fetch some specific scope access only.
+                    ### But it is totally optional. If you will not mention it here, SOS will show you all the scopes registered for this client and ask 
+                    ### for authorization. If you are mentioning it here, you will get only those scopes authorization for which you have requested.
+                    #scope: Hospital_Admin
+                provider:
+                  custom-provider:
+                    token-uri: http://localhost:7777/sso/oauth/token
+                    authorization-uri: http://localhost:7777/sso/oauth/authorize
+                    ##### This will be used by the client to fetch the user details from SSO. RS also uses this for token verivication. ######
+                    user-info-uri: http://localhost:7777/sso/userinfo 
+                    #### This name varible is used for fetching the logged in user's name at the client using security context
+                    user-name-attribute: name    
+                    
+                    
